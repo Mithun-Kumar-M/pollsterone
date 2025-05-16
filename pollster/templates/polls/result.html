@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load math_filters %}
+
+{% block content %}
+  <h2 class="mb-4">{{ question.question_text }}</h2>
+
+  {% if total_votes > 0 %}
+    {% for choice in question.choice_set.all %}
+    {% with percent=choice.votes|floatdiv:total_votes|mul:100 %}
+        <div class="card mb-2">
+          <div class="card-body">
+            <strong>{{ choice.choice_text }}</strong><br>
+            Votes: {{ choice.votes }} ({{ percent|floatformat:1 }}%)
+          </div>
+        </div>
+      {% endwith %}
+    {% endfor %}
+  {% else %}
+    <p>No votes yet.</p>
+  {% endif %}
+
+  <a href="{% url 'polls:index' %}" class="btn btn-secondary mt-3">← Back to Polls</a>
+{% endblock %}
